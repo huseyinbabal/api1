@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,9 @@ public class BookController {
 
     private final RestTemplate restTemplate;
 
+    @Value("${api2.url}")
+    private String api2Url;
+
     public BookController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -23,7 +27,7 @@ public class BookController {
     @GetMapping("/books/{name}")
     public Book getBook(@PathVariable("name") String name) {
         log.info("Calling customer service...");
-        Uuid isbn = restTemplate.getForObject("http://api2/customers/5", Uuid.class);
+        Uuid isbn = restTemplate.getForObject(api2Url + "/customers/5", Uuid.class);
         return Book.builder().name(name).isbn(isbn.getUuid()).build();
     }
 
