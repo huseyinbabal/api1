@@ -7,5 +7,5 @@ if [[ -z "$1" ]]
 fi
 
 docker build -t $1 .
-docker tag $1 $1
-docker push $1
+docker tag $1 localhost:5000/$1
+docker push localhost:5000/$1
